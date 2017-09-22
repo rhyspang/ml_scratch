@@ -93,9 +93,22 @@ def create_tree(X, y, labels):
     return my_tree
 
 
+def classify(tree, labels, test_vec):
+
+    if type(tree).__name__ != 'dict':
+        return tree
+    key = list(tree.keys())[0]
+
+    feature_idx = labels.index(key)
+
+    return classify(tree[key][test_vec[feature_idx]], labels, test_vec)
+
+
 if __name__ == '__main__':
     labels = ['no surfacing', 'flippers']
     X = np.array([[1, 1], [1, 1], [1, 0], [0, 1], [0, 1]])
     y = np.array([1, 1, 0, 0, 0])
-    r = create_tree(X, y, labels)
+    r = create_tree(X, y, labels.copy())
     print(r)
+
+    print(classify(r, labels, [1, 0]))
